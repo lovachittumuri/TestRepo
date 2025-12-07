@@ -1,21 +1,56 @@
 pipeline {
-    agent any
-
+    agent {
+        label 'ubuntuNode1'
+    }
     stages {
-        stage('Hello') {
+        stage('pre -build') {
             steps {
-                echo 'Hello This is Git - Lova Chittumuri'
-            }
-        } 
-        stage('Hi') {
-            steps {
-                echo 'Hi I am from Git Repo - Aruna Chittumuri'
+                echo "pre-build"
             }
         }
-        stage('Hey') {
-            steps {
-                echo 'Hey this is Git Case - Chinnodu Chittumuri'
+        stage('build and Deploy') {
+            agent {
+                dockerfile {
+                    dir 'ci'
+                    reuseNode true
+                }
             }
+            steps {
+                script {
+                   sh 'echo kamal'
+                }
+            }
+        }
+        stage('Unit tests') {
+            steps {
+                sh 'echo Running unit tests'
+            }
+        }
+        stage('Regression tests') {
+            steps {
+                parallel(
+                    chrome : {
+                        sh 'echo Running E2E tests on chrome'
+                    },
+                    firefox : {
+                        sh 'echo Running E2E tests on chrome'
+                    },
+                    safari : {
+                        sh 'echo Running E2E tests on chrome'
+                    }
+                )
+                
+            }
+        }
+        stage('Release to prod') {
+            steps {
+                sh 'echo Releasing to prod'
+            }
+        }
+    }
+ post {
+        always {
+            echo 'Cleanup after everything!'
         }
     }
 }
