@@ -1,56 +1,21 @@
 pipeline {
-    agent {
-        label 'ubuntuNode1'
-    }
+    agent any
+
     stages {
-        stage('pre -build') {
+        stage('Hello') {
             steps {
-                echo "pre-build"
+                echo 'Hello This is Git Hub file'
+            }
+        } 
+        stage('Hi') {
+            steps {
+                echo 'Hi I am from Git Repo'
             }
         }
-        stage('build and Deploy') {
-            agent {
-                dockerfile {
-                    dir 'ci'
-                    reuseNode true
-                }
-            }
+        stage('Hey') {
             steps {
-                script {
-                   sh 'echo kamal'
-                }
+                echo 'Hey this is Git Case'
             }
-        }
-        stage('Unit tests') {
-            steps {
-                sh 'echo Running unit tests'
-            }
-        }
-        stage('Regression tests') {
-            steps {
-                parallel(
-                    chrome : {
-                        sh 'echo Running E2E tests on chrome'
-                    },
-                    firefox : {
-                        sh 'echo Running E2E tests on chrome'
-                    },
-                    safari : {
-                        sh 'echo Running E2E tests on chrome'
-                    }
-                )
-                
-            }
-        }
-        stage('Release to prod') {
-            steps {
-                sh 'echo Releasing to prod'
-            }
-        }
-    }
- post {
-        always {
-            echo 'Cleanup after everything!'
         }
     }
 }
