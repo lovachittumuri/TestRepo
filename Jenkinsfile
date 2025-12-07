@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                echo 'Hello This is Git Hub file'
+                echo 'Hello I am the sexy Fellow'
             }
         } 
         stage('Hi') {
